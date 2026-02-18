@@ -257,6 +257,13 @@ app.MapGet("api/v2/guid", (int? count, string? format, bool? uppercase, ILogger<
     ", "text/html");
 });
 
+app.MapGet("api/v2/echo", (HttpContext ctx) =>
+{
+    var method = ctx.Request.Method;
+    var path = ctx.Request.Path.Value;
+    return Results.Text($"Method: {method}\nPath: {path}", "text/plain");
+});
+
 // ---------------- Helpers ---------------- //
 
 static string BuildDefaultPage() => @"
