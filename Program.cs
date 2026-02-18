@@ -237,8 +237,22 @@ app.MapGet("api/v2/guid", (int? count, string? format, bool? uppercase) =>
     {
         var guid = Guid.NewGuid().ToString(fmt);
         return (uppercase == true) ? guid.ToUpper() : guid;
-    });
-    return Results.Text(string.Join("\n", guids), "text/plain");
+    }).ToList();
+    var guidListHtml = string.Join("", guids.Select(g => $"<li><code>{g}</code></li>"));
+    return Results.Text(@$"
+    <html>
+    <head>
+    <link rel='stylesheet' href='https://cdn.simplecss.org/simple-v1.css'>
+    </head>
+    <body>
+    <h1>GUID Generator</h1>
+    <p>Generated {total} GUID(s) with format <code>{fmt}</code></p>
+    <ul>
+        {guidListHtml}
+    </ul>
+    </body>
+    </html>
+    ", "text/html");
 });
 
 // ---------------- Helpers ---------------- //
