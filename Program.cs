@@ -227,13 +227,17 @@ app.MapGet("api/v2/ping", (ILogger<Program> logger, IHostEnvironment env) =>
     ", "text/html");
 });
 
-app.MapGet("api/v2/guid", (int? count, string? format) =>
+app.MapGet("api/v2/guid", (int? count, string? format, bool? uppercase) =>
 {
     var total = Math.Clamp(count ?? 1, 1, 50);
     var fmt = format ?? "D";
     if (!new[] { "N", "D", "B", "P" }.Contains(fmt.ToUpper()))
         fmt = "D";
-    var guids = Enumerable.Range(0, total).Select(_ => Guid.NewGuid().ToString(fmt));
+    var guids = Enumerable.Range(0, total).Select(_ =>
+    {
+        var guid = Guid.NewGuid().ToString(fmt);
+        return (uppercase == true) ? guid.ToUpper() : guid;
+    });
     return Results.Text(string.Join("\n", guids), "text/plain");
 });
 
