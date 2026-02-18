@@ -227,9 +227,11 @@ app.MapGet("api/v2/ping", (ILogger<Program> logger, IHostEnvironment env) =>
     ", "text/html");
 });
 
-app.MapGet("api/v2/guid", () =>
+app.MapGet("api/v2/guid", (int? count) =>
 {
-    return Results.Text(Guid.NewGuid().ToString(), "text/plain");
+    var total = Math.Clamp(count ?? 1, 1, 50);
+    var guids = Enumerable.Range(0, total).Select(_ => Guid.NewGuid().ToString());
+    return Results.Text(string.Join("\n", guids), "text/plain");
 });
 
 // ---------------- Helpers ---------------- //
