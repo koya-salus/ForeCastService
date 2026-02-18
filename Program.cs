@@ -206,7 +206,24 @@ app.MapGet("api/v2/ping", (IHostEnvironment env) =>
     var hostname = Environment.MachineName;
     var runtime = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
     var os = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
-    return Results.Text($"pong | {now:yyyy-MM-dd HH:mm:ss} UTC | host: {hostname} | env: {env.EnvironmentName} | runtime: {runtime} | os: {os}", "text/plain");
+    return Results.Text(@$"
+    <html>
+    <head>
+    <link rel='stylesheet' href='https://cdn.simplecss.org/simple-v1.css'>
+    </head>
+    <body>
+    <h1>Ping</h1>
+    <table>
+        <tr><td><strong>Status</strong></td><td>pong</td></tr>
+        <tr><td><strong>Timestamp</strong></td><td>{now:yyyy-MM-dd HH:mm:ss} UTC</td></tr>
+        <tr><td><strong>Hostname</strong></td><td>{hostname}</td></tr>
+        <tr><td><strong>Environment</strong></td><td>{env.EnvironmentName}</td></tr>
+        <tr><td><strong>Runtime</strong></td><td>{runtime}</td></tr>
+        <tr><td><strong>OS</strong></td><td>{os}</td></tr>
+    </table>
+    </body>
+    </html>
+    ", "text/html");
 });
 
 // ---------------- Helpers ---------------- //
