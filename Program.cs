@@ -264,13 +264,41 @@ app.MapGet("api/v2/echo", (HttpContext ctx) =>
     var scheme = ctx.Request.Scheme;
     var protocol = ctx.Request.Protocol;
     var host = ctx.Request.Host.Value;
-    var headers = string.Join("\n", ctx.Request.Headers.Select(h => $"  {h.Key}: {h.Value}"));
-    var queryParams = ctx.Request.Query.Count > 0
-        ? string.Join("\n", ctx.Request.Query.Select(q => $"  {q.Key}: {q.Value}"))
-        : "  (none)";
     var remoteIp = ctx.Connection.RemoteIpAddress?.ToString() ?? "unknown";
     var remotePort = ctx.Connection.RemotePort;
-    return Results.Text($"Method: {method}\nPath: {path}\nScheme: {scheme}\nProtocol: {protocol}\nHost: {host}\nClient: {remoteIp}:{remotePort}\n\nQuery Parameters:\n{queryParams}\n\nHeaders:\n{headers}", "text/plain");
+    var headerRows = string.Join("", ctx.Request.Headers.Select(h =>
+        $"<tr><td><code>{System.Net.WebUtility.HtmlEncode(h.Key)}</code></td><td>{System.Net.WebUtility.HtmlEncode(h.Value)}</td></tr>"));
+    var queryRows = ctx.Request.Query.Count > 0
+        ? string.Join("", ctx.Request.Query.Select(q =>
+            $"<tr><td><code>{System.Net.WebUtility.HtmlEncode(q.Key)}</code></td><td>{System.Net.WebUtility.HtmlEncode(q.Value)}</td></tr>"))
+        : "<tr><td colspan='2'><em>No query parameters</em></td></tr>";
+    return Results.Text(@$"
+    <html>
+    <head>
+    <link rel='stylesheet' href='https://cdn.simplecss.org/simple-v1.css'>
+    </head>
+    <body>
+    <h1>Echo</h1>
+    <h2>Request Info</h2>
+    <table>
+        <tr><td><strong>Method</strong></td><td>{method}</td></tr>
+        <tr><td><strong>Path</strong></td><td>{path}</td></tr>
+        <tr><td><strong>Scheme</strong></td><td>{scheme}</td></tr>
+        <tr><td><strong>Protocol</strong></td><td>{protocol}</td></tr>
+        <tr><td><strong>Host</strong></td><td>{host}</td></tr>
+        <tr><td><strong>Client</strong></td><td>{remoteIp}:{remotePort}</td></tr>
+    </table>
+    <h2>Query Parameters</h2>
+    <table>
+        {queryRows}
+    </table>
+    <h2>Headers</h2>
+    <table>
+        {headerRows}
+    </table>
+    </body>
+    </html>
+    ", "text/html");
 });
 
 // ---------------- Helpers ---------------- //
