@@ -246,7 +246,8 @@ app.MapGet("api/v2/guid", (int? count, string? format, bool? uppercase) =>
     </head>
     <body>
     <h1>GUID Generator</h1>
-    <p>Generated {total} GUID(s) with format <code>{fmt}</code></p>
+    <p>Generated {total} GUID(s) — format: <code>{fmt}</code> — uppercase: <code>{(uppercase == true ? "yes" : "no")}</code></p>
+    <p><em>Usage: <code>?count=5&amp;format=N&amp;uppercase=true</code></em></p>
     <ul>
         {guidListHtml}
     </ul>
