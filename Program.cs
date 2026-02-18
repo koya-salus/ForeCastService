@@ -257,8 +257,9 @@ app.MapGet("api/v2/guid", (int? count, string? format, bool? uppercase, ILogger<
     ", "text/html");
 });
 
-app.MapGet("api/v2/echo", (HttpContext ctx) =>
+app.MapGet("api/v2/echo", (HttpContext ctx, ILogger<Program> logger) =>
 {
+    logger.LogInformation("Echo endpoint called from {RemoteIp}", ctx.Connection.RemoteIpAddress);
     var method = ctx.Request.Method;
     var path = ctx.Request.Path.Value;
     var scheme = ctx.Request.Scheme;
