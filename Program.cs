@@ -200,11 +200,11 @@ app.MapGet("api/v2/read-file", (string? key, string? type, ILogger<Program> logg
 })
 .WithName("GetFile");
 
-app.MapGet("api/v2/ping", () =>
+app.MapGet("api/v2/ping", (IHostEnvironment env) =>
 {
     var now = DateTime.UtcNow;
     var hostname = Environment.MachineName;
-    return Results.Text($"pong | {now:yyyy-MM-dd HH:mm:ss} UTC | host: {hostname}", "text/plain");
+    return Results.Text($"pong | {now:yyyy-MM-dd HH:mm:ss} UTC | host: {hostname} | env: {env.EnvironmentName}", "text/plain");
 });
 
 // ---------------- Helpers ---------------- //
