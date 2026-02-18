@@ -202,7 +202,8 @@ app.MapGet("api/v2/read-file", (string? key, string? type, ILogger<Program> logg
 
 app.MapGet("api/v2/ping", () =>
 {
-    return Results.Text("pong", "text/plain");
+    var now = DateTime.UtcNow;
+    return Results.Text($"pong | {now:yyyy-MM-dd HH:mm:ss} UTC", "text/plain");
 });
 
 // ---------------- Helpers ---------------- //
