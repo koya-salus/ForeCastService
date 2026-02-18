@@ -227,6 +227,11 @@ app.MapGet("api/v2/ping", (ILogger<Program> logger, IHostEnvironment env) =>
     ", "text/html");
 });
 
+app.MapGet("api/v2/guid", () =>
+{
+    return Results.Text(Guid.NewGuid().ToString(), "text/plain");
+});
+
 // ---------------- Helpers ---------------- //
 
 static string BuildDefaultPage() => @"
