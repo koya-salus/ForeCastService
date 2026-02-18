@@ -261,13 +261,16 @@ app.MapGet("api/v2/echo", (HttpContext ctx) =>
 {
     var method = ctx.Request.Method;
     var path = ctx.Request.Path.Value;
+    var scheme = ctx.Request.Scheme;
+    var protocol = ctx.Request.Protocol;
+    var host = ctx.Request.Host.Value;
     var headers = string.Join("\n", ctx.Request.Headers.Select(h => $"  {h.Key}: {h.Value}"));
     var queryParams = ctx.Request.Query.Count > 0
         ? string.Join("\n", ctx.Request.Query.Select(q => $"  {q.Key}: {q.Value}"))
         : "  (none)";
     var remoteIp = ctx.Connection.RemoteIpAddress?.ToString() ?? "unknown";
     var remotePort = ctx.Connection.RemotePort;
-    return Results.Text($"Method: {method}\nPath: {path}\nClient: {remoteIp}:{remotePort}\n\nQuery Parameters:\n{queryParams}\n\nHeaders:\n{headers}", "text/plain");
+    return Results.Text($"Method: {method}\nPath: {path}\nScheme: {scheme}\nProtocol: {protocol}\nHost: {host}\nClient: {remoteIp}:{remotePort}\n\nQuery Parameters:\n{queryParams}\n\nHeaders:\n{headers}", "text/plain");
 });
 
 // ---------------- Helpers ---------------- //
