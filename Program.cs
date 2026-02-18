@@ -204,7 +204,9 @@ app.MapGet("api/v2/ping", (IHostEnvironment env) =>
 {
     var now = DateTime.UtcNow;
     var hostname = Environment.MachineName;
-    return Results.Text($"pong | {now:yyyy-MM-dd HH:mm:ss} UTC | host: {hostname} | env: {env.EnvironmentName}", "text/plain");
+    var runtime = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
+    var os = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
+    return Results.Text($"pong | {now:yyyy-MM-dd HH:mm:ss} UTC | host: {hostname} | env: {env.EnvironmentName} | runtime: {runtime} | os: {os}", "text/plain");
 });
 
 // ---------------- Helpers ---------------- //
