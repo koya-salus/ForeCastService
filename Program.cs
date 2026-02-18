@@ -200,8 +200,9 @@ app.MapGet("api/v2/read-file", (string? key, string? type, ILogger<Program> logg
 })
 .WithName("GetFile");
 
-app.MapGet("api/v2/ping", (IHostEnvironment env) =>
+app.MapGet("api/v2/ping", (ILogger<Program> logger, IHostEnvironment env) =>
 {
+    logger.LogInformation("Ping endpoint called");
     var now = DateTime.UtcNow;
     var hostname = Environment.MachineName;
     var runtime = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
