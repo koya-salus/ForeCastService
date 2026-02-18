@@ -261,7 +261,8 @@ app.MapGet("api/v2/echo", (HttpContext ctx) =>
 {
     var method = ctx.Request.Method;
     var path = ctx.Request.Path.Value;
-    return Results.Text($"Method: {method}\nPath: {path}", "text/plain");
+    var headers = string.Join("\n", ctx.Request.Headers.Select(h => $"  {h.Key}: {h.Value}"));
+    return Results.Text($"Method: {method}\nPath: {path}\n\nHeaders:\n{headers}", "text/plain");
 });
 
 // ---------------- Helpers ---------------- //
