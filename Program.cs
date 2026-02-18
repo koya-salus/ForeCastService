@@ -203,7 +203,8 @@ app.MapGet("api/v2/read-file", (string? key, string? type, ILogger<Program> logg
 app.MapGet("api/v2/ping", () =>
 {
     var now = DateTime.UtcNow;
-    return Results.Text($"pong | {now:yyyy-MM-dd HH:mm:ss} UTC", "text/plain");
+    var hostname = Environment.MachineName;
+    return Results.Text($"pong | {now:yyyy-MM-dd HH:mm:ss} UTC | host: {hostname}", "text/plain");
 });
 
 // ---------------- Helpers ---------------- //
