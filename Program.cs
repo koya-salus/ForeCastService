@@ -227,8 +227,9 @@ app.MapGet("api/v2/ping", (ILogger<Program> logger, IHostEnvironment env) =>
     ", "text/html");
 });
 
-app.MapGet("api/v2/guid", (int? count, string? format, bool? uppercase) =>
+app.MapGet("api/v2/guid", (int? count, string? format, bool? uppercase, ILogger<Program> logger) =>
 {
+    logger.LogInformation("GUID generator called with count={Count}, format={Format}", count, format);
     var total = Math.Clamp(count ?? 1, 1, 50);
     var fmt = format ?? "D";
     if (!new[] { "N", "D", "B", "P" }.Contains(fmt.ToUpper()))
