@@ -265,7 +265,9 @@ app.MapGet("api/v2/echo", (HttpContext ctx) =>
     var queryParams = ctx.Request.Query.Count > 0
         ? string.Join("\n", ctx.Request.Query.Select(q => $"  {q.Key}: {q.Value}"))
         : "  (none)";
-    return Results.Text($"Method: {method}\nPath: {path}\n\nQuery Parameters:\n{queryParams}\n\nHeaders:\n{headers}", "text/plain");
+    var remoteIp = ctx.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+    var remotePort = ctx.Connection.RemotePort;
+    return Results.Text($"Method: {method}\nPath: {path}\nClient: {remoteIp}:{remotePort}\n\nQuery Parameters:\n{queryParams}\n\nHeaders:\n{headers}", "text/plain");
 });
 
 // ---------------- Helpers ---------------- //
