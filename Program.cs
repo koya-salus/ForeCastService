@@ -262,7 +262,10 @@ app.MapGet("api/v2/echo", (HttpContext ctx) =>
     var method = ctx.Request.Method;
     var path = ctx.Request.Path.Value;
     var headers = string.Join("\n", ctx.Request.Headers.Select(h => $"  {h.Key}: {h.Value}"));
-    return Results.Text($"Method: {method}\nPath: {path}\n\nHeaders:\n{headers}", "text/plain");
+    var queryParams = ctx.Request.Query.Count > 0
+        ? string.Join("\n", ctx.Request.Query.Select(q => $"  {q.Key}: {q.Value}"))
+        : "  (none)";
+    return Results.Text($"Method: {method}\nPath: {path}\n\nQuery Parameters:\n{queryParams}\n\nHeaders:\n{headers}", "text/plain");
 });
 
 // ---------------- Helpers ---------------- //
